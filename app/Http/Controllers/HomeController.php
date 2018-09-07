@@ -131,7 +131,7 @@ class HomeController extends Controller
             $game->save();
             $table->game_id = $game->id;
             Log::info("id of new game " . $game->id);
-            $table->last_check = now()->timestamp;
+            $table->last_check = now();
             $table->save();
         }
         return array('status' => 'success');
