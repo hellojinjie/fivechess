@@ -77,6 +77,8 @@ class HomeController extends Controller
         }
         $chessTable->last_check = now();
         $chessTable->save();
+        // 重新查一遍
+        $chessTable = ChessTable::with("blackUserInfo")->with('whiteUserInfo')->find($tableId);
         return array('table' => $chessTable, 'game' => $game, 'steps' => $steps);
     }
 
