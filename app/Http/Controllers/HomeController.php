@@ -73,7 +73,7 @@ class HomeController extends Controller
         if ($chessTable->game_id > 0)
         {
             $game = Game::find($chessTable->game_id);
-            $steps = Game::where('game_id', $game->id)->get();
+            $steps = Step::where('game_id', $game->id)->get();
         }
         $chessTable->last_check = now();
         $chessTable->save();
