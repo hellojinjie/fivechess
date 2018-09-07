@@ -130,7 +130,7 @@ class HomeController extends Controller
             $game->next = 'black';
             $game->save();
             $table->game_id = $game->id;
-            $table->last_chect = now()->timestamp;
+            $table->last_check = now()->timestamp;
             $table->save();
         }
         return array('status' => 'success');
