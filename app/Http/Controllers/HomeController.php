@@ -68,8 +68,8 @@ class HomeController extends Controller
             $chessTable->save();
             return array("table" => $chessTable);
         }
-        $game = array();
-        $steps = array();
+        $game = null;
+        $steps = null;
         if ($chessTable->game_id > 0)
         {
             $game = Game::find($chessTable->game_id);
