@@ -47,9 +47,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return $request->expectsJson()
-            ? $this->prepareJsonResponse($request, $exception)
-            : $this->prepareResponse($request, $exception);
+        return $this->prepareJsonResponse($request, $exception);
     }
 
     protected function unauthenticated($request, AuthenticationException $exception)
