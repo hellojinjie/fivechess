@@ -233,14 +233,14 @@ class HomeController extends Controller
         /* 水平方向 */
         $count = 1;
         for ($i = $row - 1; $i >= 0; $i--) {
-            if ($chessArray[$i][$column] == $currentStep) {
+            if (isset($chessArray[$i][$column]) && $chessArray[$i][$column] == $currentStep) {
                 $count++;
             } else {
                 break;
             }
         }
         for ($i = $row + 1; $i < 9; $i++) {
-            if ($chessArray[$i][$column] == $currentStep) {
+            if (isset($chessArray[$i][$column]) && $chessArray[$i][$column] == $currentStep) {
                 $count++;
             } else {
                 break;
@@ -253,14 +253,14 @@ class HomeController extends Controller
         /* 竖直方向 */
         $count = 1;
         for ($i = $column - 1; $i >= 0; $i--) {
-            if ($chessArray[$row][$i] == $currentStep) {
+            if (isset($chessArray[$row][$i]) && $chessArray[$row][$i] == $currentStep) {
                 $count++;
             } else {
                 break;
             }
         }
         for ($i = $column + 1; $i < 9; $i++) {
-            if ($chessArray[$row][$i] == $currentStep) {
+            if (isset($chessArray[$row][$i]) && $chessArray[$row][$i] == $currentStep) {
                 $count++;
             } else {
                 break;
@@ -273,14 +273,14 @@ class HomeController extends Controller
         /* 斜着方向 1 */
         $count = 1;
         for ($i = $row - 1, $j = $column -  1; $i >= 0 && $j>= 0; $i--, $j--) {
-            if ($chessArray[$i][$j] == $currentStep) {
+            if (isset($chessArray[$i][$j]) && $chessArray[$i][$j] == $currentStep) {
                 $count++;
             } else {
                 break;
             }
         }
         for ($i = $row + 1, $j = $column + 1; $i < 9 && $j < 9; $i++, $j++) {
-            if ($chessArray[$i][$j] == $currentStep) {
+            if (isset($chessArray[$i][$j]) && $chessArray[$i][$j] == $currentStep) {
                 $count++;
             } else {
                 break;
@@ -293,14 +293,14 @@ class HomeController extends Controller
         /* 斜着方向 2 */
         $count = 1;
         for ($i = $row + 1, $j = $column -  1; $i < 9 && $j>= 0; $i++, $j--) {
-            if ($chessArray[$i][$j] == $currentStep) {
+            if (isset($chessArray[$i][$j]) && $chessArray[$i][$j] == $currentStep) {
                 $count++;
             } else {
                 break;
             }
         }
         for ($i = $row - 1, $j = $column + 1; $i >= 0 && $j < 9; $i--, $j++) {
-            if ($chessArray[$i][$j] == $currentStep) {
+            if (isset($chessArray[$i][$j]) && $chessArray[$i][$j] == $currentStep) {
                 $count++;
             } else {
                 break;
