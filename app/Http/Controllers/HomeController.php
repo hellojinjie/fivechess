@@ -196,8 +196,8 @@ class HomeController extends Controller
 
         if ($winResult)
         {
-            $game->next = null;
             $game->winner = $game->next;
+            $game->next = null;
         }
         else
         {
