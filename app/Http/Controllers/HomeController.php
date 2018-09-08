@@ -218,7 +218,7 @@ class HomeController extends Controller
     private function judge($gameId, $row, $column, $currentStep)
     {
         $steps = Step::where('game_id', $gameId)->orderBy("step_num", "asc")->get();
-        $chessArray = [9][9];
+        $chessArray = array();
         foreach ($steps as $step)
         {
             if ($step->step_num % 2 == 1)
