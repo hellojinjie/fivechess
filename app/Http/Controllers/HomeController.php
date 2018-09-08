@@ -73,7 +73,7 @@ class HomeController extends Controller
         if ($chessTable->game_id > 0)
         {
             $game = Game::find($chessTable->game_id);
-            $steps = Step::where('game_id', $game->id)->get();
+            $steps = Step::where('game_id', $game->id)->orderBy("step_num", "asc")->get();
         }
         $chessTable->last_check = now();
         $chessTable->save();
@@ -190,15 +190,126 @@ class HomeController extends Controller
         $step->game_id = $game->id;
         $step->step_num = $game->current_num + 1;
         $step->save();
-        $game->current_num = $game->current_num + 1;
-        if ($game->next == 'black')
+
+        // 判断下输赢
+        $winResult = $this->judge($game->id, $x, $y, $game->next);
+
+        if ($winResult)
         {
-            $game->next = 'white';
+            $game->next = null;
+            $game->winner = $game->next;
         }
         else
         {
-            $game->next = 'black';
+            $game->current_num = $game->current_num + 1;
+            if ($game->next == 'black')
+            {
+                $game->next = 'white';
+            }
+            else
+            {
+                $game->next = 'black';
+            }
         }
+
         $game->save();
+    }
+
+    private function judge($gameId, $row, $column, $currentStep)
+    {
+        $steps = Step::where('game_id', $gameId)->orderBy("step_num", "asc")->get();
+        $chessArray = [9][9];
+        foreach ($steps as $step)
+        {
+            if ($step->step_num % 2 == 1)
+            {
+                $chessArray[$step->x][$step->y] = 'black';
+            }
+            else
+            {
+                $chessArray[$step->x][$step->y] = 'white';
+            }
+        }
+        /* 水平方向 */
+        $count = 1;
+        for ($i = $row - 1; $i >= 0; $i--) {
+            if ($chessArray[$i][$column] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        for ($i = $row + 1; $i < 9; $i++) {
+            if ($chessArray[$i][$column] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        if ($count >= 5) {
+            return true;
+        }
+
+        /* 竖直方向 */
+        $count = 1;
+        for ($i = $column - 1; $i >= 0; $i--) {
+            if ($chessArray[$row][$i] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        for ($i = $column + 1; $i < 9; $i++) {
+            if ($chessArray[$row][$i] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        if ($count >= 5) {
+            return true;
+        }
+
+        /* 斜着方向 1 */
+        $count = 1;
+        for ($i = $row - 1, $j = $column -  1; $i >= 0 && $j>= 0; $i--, $j--) {
+            if ($chessArray[$i][$j] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        for ($i = $row + 1, $j = $column + 1; $i < 9 && $j < 9; $i++, $j++) {
+            if ($chessArray[$i][$j] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        if ($count >= 5) {
+            return true;
+        }
+
+        /* 斜着方向 2 */
+        $count = 1;
+        for ($i = $row + 1, $j = $column -  1; $i < 9 && $j>= 0; $i++, $j--) {
+            if ($chessArray[$i][$j] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        for ($i = $row - 1, $j = $column + 1; $i >= 0 && $j < 9; $i--, $j++) {
+            if ($chessArray[$i][$j] == $currentStep) {
+                $count++;
+            } else {
+                break;
+            }
+        }
+        if ($count >= 5) {
+            return true;
+        }
+
+        return false;
     }
 }
