@@ -217,6 +217,7 @@ class HomeController extends Controller
         }
 
         $game->save();
+        return array("status" => "success");
     }
 
     private function judge($gameId, $row, $column, $currentStep)
