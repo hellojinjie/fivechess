@@ -13,7 +13,7 @@ class AddWinnerToGames extends Migration
      */
     public function up()
     {
-        Schema::table('steps', function (Blueprint $table) {
+        Schema::table('games', function (Blueprint $table) {
             $table->string("winner")->nullable();
         });
     }
