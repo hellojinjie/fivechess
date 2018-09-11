@@ -66,6 +66,8 @@ class HomeController extends Controller
                 $game->next = '';
                 $game->save();
             }
+            $chessTable->user_black = 0;
+            $chessTable->user_white = 0;
             $chessTable->game_id = 0;
             $chessTable->save();
         }
