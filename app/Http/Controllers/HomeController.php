@@ -56,6 +56,8 @@ class HomeController extends Controller
     public function tableStatus($tableId)
     {
         $chessTable = ChessTable::with("blackUserInfo")->with('whiteUserInfo')->find($tableId);
+        $game = null;
+        $steps = null;
         if (Carbon::createFromTimeString($chessTable->last_check)->diffInMinutes(now()) >= 5)
         {
             if ($chessTable->game_id > 0)
@@ -66,17 +68,17 @@ class HomeController extends Controller
             }
             $chessTable->game_id = 0;
             $chessTable->save();
-            return array("table" => $chessTable);
         }
-        $game = null;
-        $steps = null;
-        if ($chessTable->game_id > 0)
+        else
         {
-            $game = Game::find($chessTable->game_id);
-            $steps = Step::where('game_id', $game->id)->orderBy("step_num", "asc")->get();
+            if ($chessTable->game_id > 0)
+            {
+                $game = Game::find($chessTable->game_id);
+                $steps = Step::where('game_id', $game->id)->orderBy("step_num", "asc")->get();
+            }
+            $chessTable->last_check = now();
+            $chessTable->save();
         }
-        $chessTable->last_check = now();
-        $chessTable->save();
         // 重新查一遍
         $chessTable = ChessTable::with("blackUserInfo")->with('whiteUserInfo')->find($tableId);
         return array('table' => $chessTable, 'game' => $game, 'steps' => $steps);
